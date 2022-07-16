@@ -2,12 +2,12 @@ from django.db import models
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-class Category(models.Model):
+class Tags(models.Model):
 	name = models.CharField(max_length=128)
 
 
 class Post(models.Model):
-	category = models.ForeignKey(Category, on_delete=models.CASCADE)
+	category = models.ForeignKey(Tags, on_delete=models.CASCADE)
 	author = models.ForeignKey(User, on_delete=models.CASCADE)
 	title = models.CharField(max_length=256)
 	decription = models.TextField(max_length=1024)
