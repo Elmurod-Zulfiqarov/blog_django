@@ -45,6 +45,7 @@ class Post(BaseModel):
 	views_count = models.PositiveIntegerField(default=0)
 
 	is_popular = models.BooleanField(default=False)
+	is_feature = models.BooleanField(default=False)
 	# popular_post_manages = PopularPostManager()
 
 

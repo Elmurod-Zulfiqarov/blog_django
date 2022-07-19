@@ -10,11 +10,15 @@ class AuthorListView(ListAPIView):
 	queryset = Author.objects.all()
 	serializer_class = AuthorSerializer
 
+class TopAuthorListView(ListAPIView):
+	queryset = Author.objects.filter(is_top=True)
+	serializer_class = AuthorSerializer
+
 
 class AuthorDetailView(RetrieveAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-    lookup_field = 'id'
+    # lookup_field = 'id'
 
 
 class AuthorPostsView(ListAPIView):

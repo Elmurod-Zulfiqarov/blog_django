@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from .models import Post, Contact
+from .models import Post, Contact, Tag, Category
 from django.views import View
 from rest_framework.viewsets import ModelViewSet
-from .serializers import PostSerializer, ContactSerializer
-from rest_framework.generics import CreateAPIView
+from .serializers import PostSerializer, ContactSerializer, TagSerializer, CategorySerializer
+from rest_framework.generics import CreateAPIView, ListAPIView
+from helpers.pagination import CustomPagination
 
-class Home(View):
+class HomeTemplateView(View):
 	def get(self, request, *args, **kwargs):
 		search = request.GET.get("search")
 		print(search)			
@@ -16,12 +17,43 @@ class Home(View):
 		return render(request, "post/index.html", {"post": post, "search": search})
 	
 		
-class Home_Drf(ModelViewSet):
+class PostViewSet(ModelViewSet):
 	queryset = Post.objects.all()
 	serializer_class = PostSerializer
-	# search_fields = ["title", "tag", "category", "author"]
+	pagination_class = CustomPagination
+
+
+class TopPostListView(ListAPIView):
+	queryset = Post.objects.filter(is_popular=True)
+	serializer_class = PostSerializer
+
+
+class ResentlyPostListView(ListAPIView):
+	queryset = Post.objects.order_by("-published_date")
+	serializer_class = PostSerializer
+
+
+class FeaturePostListView(ListAPIView):
+	queryset = Post.objects.filter(is_feature=True)
+	serializer_class = PostSerializer
 
 
 class ContactCreateView(CreateAPIView):
-	queryset = Contact
+	queryset = Contact.objects.all()
 	serializer_class = ContactSerializer
+
+
+class PostListView(ListAPIView):
+	queryset = Post.objects.all()
+	serializer_class = PostSerializer
+
+
+class TagListView(ListAPIView):
+	queryset = Tag.objects.all()
+	serializer_class = TagSerializer
+
+
+class CategoryListView(ListAPIView):
+	queryset = Category.objects.all()
+	serializer_class = CategorySerializer
+
